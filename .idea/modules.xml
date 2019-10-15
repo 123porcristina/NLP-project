@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/NLP.iml" filepath="$PROJECT_DIR$/.idea/NLP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../SEMESTER 1/Intro to Data Mining - DATS 6103/Final-Project-Group-2/Code/.idea/Code.iml" filepath="$PROJECT_DIR$/../../../SEMESTER 1/Intro to Data Mining - DATS 6103/Final-Project-Group-2/Code/.idea/Code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Project.iml" filepath="$PROJECT_DIR$/.idea/Project.iml" />
     </modules>
   </component>
 </project>
