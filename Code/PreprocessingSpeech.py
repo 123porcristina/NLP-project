@@ -22,36 +22,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
-
-# nlp = spacy.load('en_core_web_sm')
-# stopwords = spacy.lang.en.stop_words.STOP_WORDS
-
-class Speeches(object):
-
-    def __init__(self):
-        self.base_corpus_tokens = []
-        # self.num_docs = len(reuters.fileids())
-        # self.sentence_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-        self.treebank_tokenizer = TreebankWordTokenizer()
-
-    def read_directory_files(self, directory):
-        """Get documents from the directory"""
-        file_texts = []
-        files = [f for f in listdir(directory) if isfile(join(directory, f))]
-        for f in files:
-            file_text = self.getText(join(directory, f))
-            # print(file_text)
-            file_texts.append({"file": f, "content": file_text})
-        return file_texts
-
-    def getText(self, filename):
-        """Read text from documents"""
-        doc = docx.Document(filename)
-        fullText = []
-        for para in doc.paragraphs:
-            fullText.append(para.text)
-        return '\n'.join(fullText)
+class Preprocessing:
+    def __init__(self, base_speeches, curr_speeches):
+        self.base_speeches = base_speeches,
+        self.curr_speeches = curr_speeches
 
     def tokenizeWord(self, document):
         """Tokenize documents at word level"""
@@ -134,46 +108,3 @@ class Speeches(object):
                 high_probabilty_bigram.append(bigram_words)
 
         return high_probabilty_bigram #slogprob / word_length
-
-
-
-dir_base = 'C:/Users/Giraldo/Documents/NLC/NLP/Data/Base Data'
-dir_curr = 'C:/Users/Giraldo/Documents/NLC/NLP/Data/Current Data'
-speech = Speeches()
-
-base_speeches = speech.read_directory_files(dir_base)
-curr_speeches = speech.read_directory_files(dir_curr)
-tokenWord_base = speech.tokenizeWord(base_speeches)
-tokenWord_curr = speech.tokenizeWord(curr_speeches)
-
-differences = speech.getDifferences(tokenWord_base, tokenWord_curr)
-doc_curr, frq_doc_base, frq_doc_curr = speech.plot(tokenWord_base, tokenWord_curr)
-mle_probab = speech.mle_distribution(doc_curr, frq_doc_base, frq_doc_curr )
-
-doc_curr, freq_bi_curr, freq_bi_base, bigrams_doc, bigrams_base = speech.bigrams(tokenWord_base, tokenWord_curr)
-high_prob_bigram= speech.mle_bigram(freq_bi_curr,freq_bi_base,bigrams_doc, len(tokenWord_curr))
-
-
-#/ print('\n'.join('{}: {}'.format(*k) for k in enumerate(differences)))
-print("length base: "+str(len(tokenWord_base)))
-print("length curr: "+str(len(tokenWord_curr)))
-print("length differences: " +str(len(differences)))
-print("High probability: "+str((mle_probab)))
-print("High probability Bigrams: "+str(high_prob_bigram))
-# print("bigram curr: ")
-# print('\n'.join('{}: {}'.format(*k) for k in enumerate(bigrams_doc)))
-# print("bigram base: ")
-# print('\n'.join('{}: {}'.format(*k) for k in enumerate(bigrams_base)))
-
-# import pandas as pd
-# words_df = pd.DataFrame({'word': list(frq_doc_curr.keys()), 'count': list(frq_doc_curr.values())})
-#
-#
-# import plotly.express as px
-# tips = px.data.tips()
-# fig = px.bar(words_df, x="word", y="count")
-# fig.show()
-
-
-
-
