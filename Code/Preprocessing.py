@@ -13,6 +13,22 @@ class PreprocessingText:
     def __init__(self, pr_df):
         self.pr_df = pr_df
 
+    def read_file(self, filename):
+        input_file_text = open(filename, encoding='utf-8').read()
+        return input_file_text
+
+    def read_directory_files(self, directory):
+        file_texts = []
+        files = [f for f in listdir(directory) if isfile(join(directory, f))]
+        for f in files:
+            file_text = read_file(join(directory, f))
+            print(file_text)
+            file_texts.append({"file": f, "content": file_text})
+        return file_texts
+
+    def general_docs(self):
+        pass
+
     # Tokenization - separates words
     def tokenization(self):
         nlp = English()
@@ -30,7 +46,8 @@ def main():
     # RENZO: File Upload - Begin --------------
 
     #Put the path of Data file here
-    file_path = ('/Users/renzocastagnino/Google Drive/MASTER DATA SCIENCE/SEMESTER 2/Natural Language ''Process/Project/Data/Salt Lake City_ UT - 2016.docx')
+    # file_path = ('/Users/renzocastagnino/Google Drive/MASTER DATA SCIENCE/SEMESTER 2/Natural Language ''Process/Project/Data/Salt Lake City_ UT - 2016.docx')
+    file_path = ('C:/Users/Giraldo/Documents/NLC/NLP/Data/Salt Lake City_ UT - 2016.docx')
     raw_text = Document(file_path)
 
     #Renzo: Creates an Document object with the paragraphs of the DOCX.
@@ -49,7 +66,8 @@ def main():
     # RENZO: Classes - Begin --------------
     pre_text = PreprocessingText(txt_data)
     text_clean = pre_text.tokenization()
-    print(text_clean)
+    for i in text_clean:
+        print(i)
     # RENZO: Classes - End --------------
 
 main()
