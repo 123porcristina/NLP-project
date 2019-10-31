@@ -7,7 +7,7 @@ import pandas as pd
 def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
 
-    """Read PDFs and DOCs"""
+    """Read PDFs and DOCs """
     readText = ReadText.ReadDoc(dir_base)
     df_files = readText.read_directory_files()
     print(df_files)
