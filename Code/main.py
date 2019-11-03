@@ -3,6 +3,9 @@ from Code import PreprocessingSpeech as ps
 from pathlib import Path
 import pandas as pd
 
+from spacy.lang.en import English
+nlp = English()
+
 
 def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
@@ -18,11 +21,21 @@ def main():
 
 
     """Read the pickle file"""
-    #df_file = pd.read_pickle(dir_base+"/df_data.pickle")
-    #print(df_file)
-    #print(df_file.loc[3,'speech'])
+    df_file = pd.read_pickle(dir_base+"/df_data.pickle")
+    print(df_file)
+    # print(df_file.loc[3,'speech'])
+
 
     """Preprocessing texts"""
+    preprocessing = ps.Preprocessing(speeches=df_file)
+    for index, row in df_file.iterrows():
+        speech = row['speech']
+        filetype = row['type_doc']
+        tokenWord = preprocessing.tokenizeWord(speech, filetype)
+        filteredWord = preprocessing.remove_words(tokenWord)
+        print(filteredWord)
+
+
     # speech = ps.Preprocessing(base_speeches=base_speeches, curr_speeches=curr_speeches)
     # tokenWord_base = speech.tokenizeWord(base_speeches)
     # tokenWord_curr = speech.tokenizeWord(curr_speeches)
