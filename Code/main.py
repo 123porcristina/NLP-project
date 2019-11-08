@@ -12,41 +12,26 @@ nlp = English()
 def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
 
-    # """Read PDFs and DOCs """
+    """Read PDFs and DOCs"""
     # readText = ReadText.ReadDoc(dir_base)
     # df_files = readText.read_directory_files()
-    # print(df_files)
-    #
-    # """Save the Dataframe structure locally into a pickle file to easiness of use"""
+
+    """Save the Dataframe structure locally into a pickle file to easiness of use"""
     # save_df = ReadText.SaveDf(dir_base, df_files)
     # save_df.save_dataframe()
-
 
     """Read the pickle file"""
     df_file = pd.read_pickle(dir_base+"/df_data.pickle")
     print(df_file)
 
-
     """Preprocessing texts"""
-    preprocessing = ps.Preprocessing(speeches=df_file)
-    clean_tokens = preprocessing.clean_data()
-    print("\n".join("{}\t{}".format(k, v) for k, v in clean_tokens.items()))
+    # preprocessing = ps.Preprocessing(speeches=df_file)
+    # clean_tokens = preprocessing.clean_data()
+    # print("\n".join("{}\t{}".format(k, v) for k, v in clean_tokens.items()))
 
     """LDA Model"""
-    model = Model.modelTopic(doc=clean_tokens)
-    model.lda_model()
-
-
-
-    # preprocessing = ps.Preprocessing(speeches=df_file)
-    # for index, row in df_file.iterrows():
-    #     speech = row['speech']
-    #     filetype = row['type_doc']
-    #     tokenWord = preprocessing.tokenizeWord(speech, filetype)
-    #     filteredWord = preprocessing.remove_words(tokenWord)
-    #     print(filteredWord)
-
-
+    #model = Model.modelTopic(doc=clean_tokens)
+    #model.lda_model()
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)

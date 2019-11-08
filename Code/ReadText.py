@@ -13,7 +13,7 @@ class ReadDoc:
     def read_directory_files(self):
         df_files = pd.DataFrame(columns=['city', 'state', 'year', 'type_doc', 'speech'])
 
-        """RC. Iterate over each folder to find possible .PDFs and .DOCX documents.also"""
+        """RC. Iterate over each folder to find possible .PDFs and .DOCX documents. also"""
         for root, dirs, files in walk(self.path):
             for file_ in files:
                 if file_.endswith('.docx'):
