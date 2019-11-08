@@ -46,7 +46,7 @@ class ReadDoc:
         doc = Document((os.path.join(root, file_)))
         doc_text = []
         for para in doc.paragraphs:
-            doc_text.append(para.text)
+            doc_text.append((para.text).casefold())
         return doc_text
 
     """RC. This function looks for all the .PDF documents and return just the text for each document"""
@@ -60,7 +60,7 @@ class ReadDoc:
         while count < num_pages:
             try:
                 pageObj = pdfReader.getPage(count)
-                pdf_text += pageObj.extractText()
+                pdf_text += (pageObj.extractText()).casefold()
                 count += 1
             except Exception as e:
                 print(("BAD FILE: ",pageObj, ' - ', root, file_))

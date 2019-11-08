@@ -1,2 +1,4 @@
 # NLP-project
-I am testing out writing a sentence 
+
+pip install PyPDF2
+pip install gensim

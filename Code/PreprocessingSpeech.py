@@ -1,56 +1,47 @@
-# from nltk.corpus import reuters
-# # import nltk.data
-# from os import listdir
-# from os.path import isfile, join
-# from nltk.util import bigrams
-# from nltk.tokenize import TreebankWordTokenizer
-# from nltk.tokenize import sent_tokenize
-# # from nltk.corpus import stopwords
-# import spacy
-# # import nltk.data
-# from os import listdir
-# from os.path import isfile, join
-# from nltk.util import bigrams
-# # from nltk.tokenize import TreebankWordTokenizer
-# import docx
-# treebank_tokenizer = TreebankWordTokenizer()
-# # nltk.download('punkt')
-# # nltk.download('stopwords')
-#
-# import plotly.graph_objects as go
-# import numpy as np
-# import matplotlib.pyplot as plt
-
 from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
+import string
 
 nlp = English()
 
 
 class Preprocessing:
-    # def __init__(self, base_speeches, curr_speeches):
-    #     self.base_speeches = base_speeches,
-    #     self.curr_speeches = curr_speeches
 
     def __init__(self, speeches):
         self.speeches = speeches
 
+    def clean_data(self):
+        tokens = {}
+        for index, row in self.speeches.iterrows():
+            speech = row['speech']
+            filetype = row['type_doc']
+            tokenWord = self.tokenizeWord(speech, filetype)
+            filteredWord = self.remove_words(tokenWord)
+            tokens.update({index: filteredWord})
+        return tokens
+
+
     def tokenizeWord(self, document, filetype):
         """Tokenize documents at word level, where each word is the lemmatized word"""
-
         token_list = []
-
-        if filetype == '.docx':
-            for item in document:
-                words = nlp(item)
-                [token_list.append(token.lemma_) for token in words]
-
-        elif filetype == '.pdf':
-            try:
-                words = nlp(document)
-                [token_list.append(token.lemma_) for token in words]
-            except:
-                pass
+        try:
+            words = nlp(document)
+            [token_list.append(token.lemma_) for token in words]
+        except:
+            pass
+        # if filetype == '.docx':
+        #     for item in document:
+        #         words = nlp(item)
+        #         # # get rid of newlines
+        #         # words = words.strip().replace("\n", " ").replace("\r", " ")
+        #         [token_list.append(token.lemma_) for token in words]
+        #
+        # elif filetype == '.pdf':
+        #     try:
+        #         words = nlp(document)
+        #         [token_list.append(token.lemma_) for token in words]
+        #     except:
+        #         pass
 
         return token_list
 
@@ -66,9 +57,21 @@ class Preprocessing:
     def remove_words(word_list):
         """Remove unnecessary words such as (The, we, he,...)"""
         stopwords = STOP_WORDS
+        nlc_stopwords = [u'welcome', u'Welcome', u'thank', u'Thank', u'thanks', u'words', u'thanking', u'let', u'like',
+                         u'lot', u'Good', u'good', u'morning', u'afternoon', u'evening', u'look', u'honor', u'tonight',
+                         u'city', u'today', u'state', u'january', u'february', u'feb', u'march', u'june', u'july',
+                         u'august', u'september', u'october', u'november', u'december', u'monday', u'tuesday',
+                         u'wednesday', u'thursday', u'friday', u'saturday', u'sunday', u'presentation', u'community',
+                         u'new', u'year', u'years', u'th', u'applause']
+
+        punctuations = string.punctuation
         filtered_list = []
-        [filtered_list.append(token) for token in word_list if token.lower() not in stopwords and token.isalpha()]
+        [filtered_list.append(token) for token in word_list if token.lower() not in stopwords and token.isalpha()
+         and token not in punctuations and token not in nlc_stopwords ]
         return filtered_list
+
+    def remove_entities(self):
+        pass
 
 
     # def plot(self, frq_doc_base, frq_doc_curr):

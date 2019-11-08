@@ -1,7 +1,9 @@
 from Code import ReadText
 from Code import PreprocessingSpeech as ps
+from Code import Model
 from pathlib import Path
 import pandas as pd
+import pprint
 
 from spacy.lang.en import English
 nlp = English()
@@ -10,35 +12,41 @@ nlp = English()
 def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
 
-    """Read PDFs and DOCs """
-    readText = ReadText.ReadDoc(dir_base)
-    df_files = readText.read_directory_files()
-    print(df_files)
-
-    """Save the Dataframe structure locally into a pickle file to easiness of use"""
-    save_df = ReadText.SaveDf(dir_base, df_files)
-    save_df.save_dataframe()
+    # """Read PDFs and DOCs """
+    # readText = ReadText.ReadDoc(dir_base)
+    # df_files = readText.read_directory_files()
+    # print(df_files)
+    #
+    # """Save the Dataframe structure locally into a pickle file to easiness of use"""
+    # save_df = ReadText.SaveDf(dir_base, df_files)
+    # save_df.save_dataframe()
 
 
     """Read the pickle file"""
     df_file = pd.read_pickle(dir_base+"/df_data.pickle")
     print(df_file)
-    # print(df_file.loc[3,'speech'])
 
 
     """Preprocessing texts"""
     preprocessing = ps.Preprocessing(speeches=df_file)
-    for index, row in df_file.iterrows():
-        speech = row['speech']
-        filetype = row['type_doc']
-        tokenWord = preprocessing.tokenizeWord(speech, filetype)
-        filteredWord = preprocessing.remove_words(tokenWord)
-        print(filteredWord)
+    clean_tokens = preprocessing.clean_data()
+    print("\n".join("{}\t{}".format(k, v) for k, v in clean_tokens.items()))
+
+    """LDA Model"""
+    model = Model.modelTopic(doc=clean_tokens)
+    model.lda_model()
 
 
-    # speech = ps.Preprocessing(base_speeches=base_speeches, curr_speeches=curr_speeches)
-    # tokenWord_base = speech.tokenizeWord(base_speeches)
-    # tokenWord_curr = speech.tokenizeWord(curr_speeches)
+
+    # preprocessing = ps.Preprocessing(speeches=df_file)
+    # for index, row in df_file.iterrows():
+    #     speech = row['speech']
+    #     filetype = row['type_doc']
+    #     tokenWord = preprocessing.tokenizeWord(speech, filetype)
+    #     filteredWord = preprocessing.remove_words(tokenWord)
+    #     print(filteredWord)
+
+
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)
