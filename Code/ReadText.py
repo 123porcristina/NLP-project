@@ -33,10 +33,10 @@ class ReadDoc:
                     state_text = re.search('[A-Z]+[A-Z]', file_)[0]
                     year_text = re.findall(r'.*([1-3][0-9]{3})', (os.path.join(root, file_)))[0]
                     df_files = df_files.append({'city': city_text,
-                                                 'state': state_text,
-                                                 'year': year_text,
-                                                 'type_doc': '.pdf',
-                                                 'speech': pdf_text}, ignore_index=True)
+                                                'state': state_text,
+                                                'year': year_text,
+                                                'type_doc': '.pdf',
+                                                'speech': pdf_text}, ignore_index=True)
 
         """
         Temporarily, we are deleting the rows that are empty. We need to solve how to read properly 
@@ -51,9 +51,11 @@ class ReadDoc:
     @staticmethod
     def get_text_doc(root, file_):
         doc = Document((os.path.join(root, file_)))
-        doc_text = []
+        #doc_text = []
+        doc_text = ""
         for para in doc.paragraphs:
-            doc_text.append(para.text.casefold())
+            #doc_text.append(para.text.casefold())
+            doc_text += para.text.casefold()
         return doc_text
 
     """RC. This function looks for all the .PDF documents and return just the text for each document"""
@@ -70,7 +72,7 @@ class ReadDoc:
                 pdf_text += (pageObj.extractText()).casefold()
                 count += 1
             except Exception as e:
-                print("file : ", root, file_," -- Error: ", e)
+                print("file : ", root, file_, " -- Error: ", e)
                 return
         return pdf_text
 

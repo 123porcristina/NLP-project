@@ -45,5 +45,12 @@ class Preprocessing:
          and token not in punctuations and token not in nlc_stopwords]
         return filtered_list
 
+    import spacy
+    from spacy import displacy
+    from collections import Counter
+    import en_core_web_sm
+    nlp = en_core_web_sm.load()
+
+    @staticmethod
     def remove_entities(self):
         pass

@@ -19,13 +19,13 @@ def main():
 
     """Read the pickle file"""
     df_file = pd.read_pickle(dir_base+"/df_data.pickle")
-    # print (df_file.applymap(lambda x: x is None))
-    # print(df_file.isnull())
+    # print(df_file.dtypes)
+
 
     """Preprocessing texts"""
-    # preprocessing = ps.Preprocessing(speeches=df_file)
-    # clean_tokens = preprocessing.clean_data()
-    # print("\n".join("{}\t{}".format(k, v) for k, v in clean_tokens.items()))
+    preprocessing = ps.Preprocessing(speeches=df_file)
+    clean_tokens = preprocessing.clean_data()
+    print("\n".join("{}\t{}".format(k, v) for k, v in clean_tokens.items()))
 
     """LDA Model"""
     #model = Model.modelTopic(doc=clean_tokens)
