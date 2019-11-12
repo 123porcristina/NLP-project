@@ -3,11 +3,8 @@ from Code import PreprocessingSpeech as ps
 from Code import Model
 from pathlib import Path
 import pandas as pd
-import pprint
-
-from spacy.lang.en import English
-nlp = English()
-
+pd.set_option('display.width', 2000)
+pd.set_option('display.max_columns',10)
 
 def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
@@ -22,7 +19,8 @@ def main():
 
     """Read the pickle file"""
     df_file = pd.read_pickle(dir_base+"/df_data.pickle")
-    print(df_file)
+    # print (df_file.applymap(lambda x: x is None))
+    # print(df_file.isnull())
 
     """Preprocessing texts"""
     # preprocessing = ps.Preprocessing(speeches=df_file)

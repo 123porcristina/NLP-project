@@ -38,6 +38,13 @@ class ReadDoc:
                                                  'type_doc': '.pdf',
                                                  'speech': pdf_text}, ignore_index=True)
 
+        """
+        Temporarily, we are deleting the rows that are empty. We need to solve how to read properly 
+        all the PDF files.
+        """
+        df_files['speech'] = df_files['speech'].astype(str)
+        df_files = df_files[df_files.speech != ""]
+
         return df_files
 
     """RC. This function looks for all the .DOCX documents and return just the text for each document"""
@@ -46,7 +53,7 @@ class ReadDoc:
         doc = Document((os.path.join(root, file_)))
         doc_text = []
         for para in doc.paragraphs:
-            doc_text.append((para.text).casefold())
+            doc_text.append(para.text.casefold())
         return doc_text
 
     """RC. This function looks for all the .PDF documents and return just the text for each document"""
@@ -63,10 +70,8 @@ class ReadDoc:
                 pdf_text += (pageObj.extractText()).casefold()
                 count += 1
             except Exception as e:
-                print(("BAD FILE: ",pageObj, ' - ', root, file_))
-                print("PDF failed to read. Error is: ", e)
+                print("file : ", root, file_," -- Error: ", e)
                 return
-
         return pdf_text
 
 
