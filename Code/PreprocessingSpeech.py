@@ -57,5 +57,3 @@ class Preprocessing:
         entities = ([X.text for X in doc.ents])
         filtered_entities += ([word for word in filtered_word if word not in entities])
         return filtered_entities
-
-
