@@ -1,5 +1,6 @@
 from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
+from collections import defaultdict
 import string
 
 nlp = English()
@@ -14,43 +15,43 @@ class Preprocessing:
         tokens = {}
         for index, row in self.speeches.iterrows():
             speech = row['speech']
-            tokenWord = self.tokenize_word(speech)
-            filteredWord = self.remove_words(tokenWord)
-            tokens.update({index: filteredWord})
-        return print("the tokens are: \n", tokens)
+            token_word = self.tokenize_word(speech)
+            filtered_word = self.remove_words(token_word)
+            tokens.update({index: filtered_word})
+            self.speeches['token_speech'] = self.speeches.index.map(tokens)
+        return self.speeches
 
     @staticmethod
     def tokenize_word(document):
         token_list = []
         try:
             words = nlp(document)
-            [token_list.append(token.lemma_) for token in words]
+            [token_list.append(token.lemma_) for token in words if len(token) > 2 and token.text != '\n'
+             and not token.is_stop and not token.is_punct and not token.like_num]
         except Exception as e:
-            print("Error in tokenize_word process", e)
+           pass # print("Error in tokenize_word process", e)
         return token_list
 
     @staticmethod
     def remove_words(word_list):
         stopwords = STOP_WORDS
-        nlc_stopwords = [u'welcome', u'Welcome', u'thank', u'Thank', u'thanks', u'words', u'thanking', u'let', u'like',
-                         u'lot', u'Good', u'good', u'morning', u'afternoon', u'evening', u'look', u'honor', u'tonight',
-                         u'city', u'today', u'state', u'january', u'february', u'feb', u'march', u'june', u'july',
-                         u'august', u'september', u'october', u'november', u'december', u'monday', u'tuesday',
-                         u'wednesday', u'thursday', u'friday', u'saturday', u'sunday', u'presentation', u'community',
-                         u'new', u'year', u'years', u'th', u'applause']
+        # nlc_stopwords = [u'welcome', u'Welcome', u'thank', u'Thank', u'thanks', u'words', u'thanking', u'let', u'like',
+        #                  u'lot', u'Good', u'good', u'morning', u'afternoon', u'evening', u'look', u'honor', u'tonight',
+        #                  u'city', u'today', u'state', u'january', u'february', u'feb', u'march', u'june', u'july',
+        #                  u'august', u'september', u'october', u'november', u'december', u'monday', u'tuesday',
+        #                  u'wednesday', u'thursday', u'friday', u'saturday', u'sunday', u'presentation', u'community',
+        #                  u'new', u'year', u'years', u'th', u'applause']
 
         punctuations = string.punctuation
         filtered_list = []
-        [filtered_list.append(token) for token in word_list if token.lower() not in stopwords and token.isalpha()
-         and token not in punctuations and token not in nlc_stopwords]
+
+        [filtered_list.append(token) for token in word_list if len(token) > 1 and token.lower() not in stopwords
+         and token.isalpha() and token not in punctuations] #and token not in nlc_stopwords]
         return filtered_list
 
-    import spacy
-    from spacy import displacy
-    from collections import Counter
-    import en_core_web_sm
-    nlp = en_core_web_sm.load()
-
-    @staticmethod
     def remove_entities(self):
         pass
+
+    def token_by_year(self):
+        pass
+        # self.speeches = speeches.groupby(['year']).sum().reset_index()

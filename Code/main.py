@@ -28,8 +28,8 @@ def main():
     print("\n".join("{}\t{}".format(k, v) for k, v in clean_tokens.items()))
 
     """LDA Model"""
-    #model = Model.modelTopic(doc=clean_tokens)
-    #model.lda_model()
+    model = Model.modelTopic(doc=clean_tokens)
+    model.lda_model()
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)
