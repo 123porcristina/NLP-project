@@ -10,10 +10,11 @@ class modelTopic:
         self.doc = doc
 
     def model_year(self):
-        df_year = self.doc.groupby(['year']).sum().reset_index()
-        # for index, row in df_year.iterrows():
-        #     # speech = row['token_speech']
-        #     df_year['model'] = self.lda_model(row)
+        # df_year = self.doc.groupby(['year']).sum().reset_index()
+        df_year = self.doc.groupby(['year'])['token_speech'].sum().reset_index()
+        for index, row in df_year.iterrows():
+            speech = row['token_speech']
+            df_year['model'] = self.lda_model(speech)
         # # df_year['model'] = df_year.apply(lambda row: self.lda_model(row), axis=1) #it changes the data type so it is bad
 
         self.lda_model(df=df_year)
@@ -25,9 +26,15 @@ class modelTopic:
     def model_population(self):
         pass
 
-    # def lda_model(self):
+    def model_bigram(self):
+        # higher threshold fewer phrases.
+        bigram = gensim.models.Phrases(self.doc.token_speech, min_count=5, threshold=100)
+        bigram_mod = gensim.models.phrases.Phraser(bigram)
+
+        pass
+
     def lda_model(self, df):
-        texts = df.token_speech#self.doc.token_speech
+        texts = df.token_speech
         dct = Dictionary(texts)
         print(dct)
 
@@ -48,7 +55,7 @@ class modelTopic:
         # print(lda_model.show_topics())
         print("[INFO] Processing...")
         # print(lda_model.print_topics(num_topics=100, num_words=3))
-        for idx, topic in lda_model.show_topics(num_topics=10, formatted=False, num_words=3):
+        for idx, topic in lda_model.show_topics(num_topics=10, formatted=False, num_words=10):
             print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
 
 
