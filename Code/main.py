@@ -21,7 +21,6 @@ def main():
     """Read the pickle file"""
     # df_file = pd.read_pickle(dir_base+"/df_data.pickle")
 
-
     """Preprocessing texts"""
     # preprocessing = ps.Preprocessing(speeches=df_file)
     # clean_tokens = preprocessing.clean_data()
