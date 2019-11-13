@@ -32,8 +32,8 @@ def main():
 
     """Read the new Dataframe with the tokens"""
     df_tokens = pd.read_pickle(dir_base+"/df_tokens.pickle")
+
     print(df_tokens)
-    print(df_tokens.loc[[1], ['token_speech']])
 
     """LDA Model"""
     # model = Model.modelTopic(doc=clean_tokens)
