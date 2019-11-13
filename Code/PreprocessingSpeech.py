@@ -17,8 +17,11 @@ class Preprocessing:
             speech = row['speech']
             token_word = self.tokenize_word(speech)
             filtered_word = self.remove_words(token_word)
+
+            """Creates new column in the df with tokens"""
             tokens.update({index: filtered_word})
             self.speeches['token_speech'] = self.speeches.index.map(tokens)
+
         return self.speeches
 
     @staticmethod
