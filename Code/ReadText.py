@@ -78,13 +78,14 @@ class ReadDoc:
 
 
 class SaveDf:
-    def __init__(self, dir_base, df_files):
+    def __init__(self, dir_base, df_files, df_name):
         self.dir_base = dir_base
         self.df_files = df_files
+        self.df_name = df_name
 
     def save_dataframe(self):
         data_df = pd.DataFrame(self.df_files)
-        return data_df.to_pickle(self.dir_base+'/'+'df_data.pickle')
+        return data_df.to_pickle(self.dir_base+'/' + self.df_name + '.pickle')
 
 
 

@@ -2,8 +2,9 @@ from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
 from collections import defaultdict
 import string
-
 nlp = English()
+import en_core_web_sm
+nlp2 = en_core_web_sm.load()
 
 
 class Preprocessing:
@@ -17,11 +18,9 @@ class Preprocessing:
             speech = row['speech']
             token_word = self.tokenize_word(speech)
             filtered_word = self.remove_words(token_word)
-
-            """Creates new column in the df with tokens"""
-            tokens.update({index: filtered_word})
+            filtered_entities = self.remove_entities(filtered_word)
+            tokens.update({index: filtered_entities})
             self.speeches['token_speech'] = self.speeches.index.map(tokens)
-
         return self.speeches
 
     @staticmethod
@@ -32,7 +31,7 @@ class Preprocessing:
             [token_list.append(token.lemma_) for token in words if len(token) > 2 and token.text != '\n'
              and not token.is_stop and not token.is_punct and not token.like_num]
         except Exception as e:
-           pass # print("Error in tokenize_word process", e)
+            pass  # print("Error in tokenize_word process", e)
         return token_list
 
     @staticmethod
@@ -44,13 +43,19 @@ class Preprocessing:
         #                  u'august', u'september', u'october', u'november', u'december', u'monday', u'tuesday',
         #                  u'wednesday', u'thursday', u'friday', u'saturday', u'sunday', u'presentation', u'community',
         #                  u'new', u'year', u'years', u'th', u'applause']
-
         punctuations = string.punctuation
         filtered_list = []
 
         [filtered_list.append(token) for token in word_list if len(token) > 1 and token.lower() not in stopwords
-         and token.isalpha() and token not in punctuations] #and token not in nlc_stopwords]
+         and token.isalpha() and token not in punctuations]  # and token not in nlc_stopwords]
         return filtered_list
 
-    def remove_entities(self):
-        pass
+    @staticmethod
+    def remove_entities(filtered_word):
+        filtered_entities = []
+        doc = nlp2(str(filtered_word))
+        entities = ([X.text for X in doc.ents])
+        filtered_entities += ([word for word in filtered_word if word not in entities])
+        return filtered_entities
+
+
