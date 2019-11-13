@@ -51,7 +51,3 @@ class Preprocessing:
 
     def remove_entities(self):
         pass
-
-    def token_by_year(self):
-        pass
-        # self.speeches = speeches.groupby(['year']).sum().reset_index()

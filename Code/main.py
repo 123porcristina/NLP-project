@@ -29,7 +29,8 @@ def main():
 
     """LDA Model"""
     model = Model.modelTopic(doc=clean_tokens)
-    model.lda_model()
+    model.model_year()
+    # model.lda_model()
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)

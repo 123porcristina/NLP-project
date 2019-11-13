@@ -10,8 +10,11 @@ class modelTopic:
         self.doc = doc
 
     def model_year(self):
-        # df_year = self.doc.groupby(['year']).sum().reset_index()
-        pass
+        df_year = self.doc.groupby(['year']).sum().reset_index()
+        # df_year['model'] = df_year.apply(lambda row: self.lda_model(row), axis=1)
+
+        self.lda_model(df=df_year)
+        return df_year#self.doc.groupby(['year']).sum().reset_index()
 
     def model_region(self):
         pass
@@ -19,8 +22,9 @@ class modelTopic:
     def model_population(self):
         pass
 
-    def lda_model(self):
-        texts = self.doc.token_speech
+    # def lda_model(self):
+    def lda_model(self, df):
+        texts = df.token_speech#self.doc.token_speech
         dct = Dictionary(texts)
         print(dct)
 
@@ -29,7 +33,8 @@ class modelTopic:
 
         """converts speech to bag of words"""
         # doc_term_matrix = [dct.doc2bow(doc) for doc in conv_df.speech]
-        doc_term_matrix = [dct.doc2bow(doc) for doc in self.doc.token_speech]
+        # doc_term_matrix = [dct.doc2bow(doc) for doc in self.doc.token_speech]
+        doc_term_matrix = [dct.doc2bow(doc) for doc in df.token_speech]
 
         """instance the model"""
         Lda = gensim.models.ldamodel.LdaModel
@@ -40,3 +45,5 @@ class modelTopic:
         # print(lda_model.print_topics(num_topics=100, num_words=3))
         for idx, topic in lda_model.show_topics(num_topics=10, formatted=False, num_words=3):
             print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
+
+        return lda_model
