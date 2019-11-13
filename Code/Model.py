@@ -11,12 +11,12 @@ class modelTopic:
 
     def model_year(self):
         df_year = self.doc.groupby(['year']).sum().reset_index()
-        for index, row in df_year.iterrows():
-            # speech = row['token_speech']
-            df_year['model'] = self.lda_model(row)
-        # df_year['model'] = df_year.apply(lambda row: self.lda_model(row), axis=1) #it changes the data type so it is bad
+        # for index, row in df_year.iterrows():
+        #     # speech = row['token_speech']
+        #     df_year['model'] = self.lda_model(row)
+        # # df_year['model'] = df_year.apply(lambda row: self.lda_model(row), axis=1) #it changes the data type so it is bad
 
-        # self.lda_model(df=df_year)
+        self.lda_model(df=df_year)
         return df_year#self.doc.groupby(['year']).sum().reset_index()
 
     def model_region(self):
