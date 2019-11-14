@@ -24,7 +24,6 @@ Flash
 
 Startup
 ---
-
  1. ` cd webapp `
  2. ` python NLP_app.py ` or ` python3 NLP_app.py `
  3. localhost:8050
