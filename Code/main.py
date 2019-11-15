@@ -10,6 +10,7 @@ def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
 
     """Read PDFs and DOCs"""
+    # print('[INFO]...Reading')
     # readText = ReadText.ReadDoc(dir_base)
     # df_files = readText.read_directory_files()
 
@@ -19,26 +20,36 @@ def main():
     # save_df.save_dataframe()
 
     """Read the pickle file"""
-    # df_file = pd.read_pickle(dir_base+"/df_data.pickle")
+    print('[INFO]...Loading Pickle')
+    df_file = pd.read_pickle(dir_base+"/df_data.pickle")
 
     """Preprocessing texts"""
+    # print('[INFO]...Preprocessing')
     # preprocessing = ps.Preprocessing(speeches=df_file)
     # clean_tokens = preprocessing.clean_data()
+    # print('\n'.join('{}: {}'.format(*k) for k in enumerate(clean_tokens)))
+
 
     """Save the new Dataframe structure locally into a pickle file to easiness of use"""
-    # name = 'df_tokens'
+    print('[INFO]...Saving Pickle')
+    name = 'df_tokens'
     # save_df = ReadText.SaveDf(dir_base, clean_tokens, name)
     # save_df.save_dataframe()
 
     """Read the new Dataframe with the tokens"""
+    print('[INFO]...Reading pickle tokens')
     df_tokens = pd.read_pickle(dir_base+"/df_tokens.pickle")
-
     print(df_tokens)
 
     """LDA Model"""
-    # model = Model.modelTopic(doc=clean_tokens)
-    # model.model_year()
-    # model.lda_model()
+    print('[INFO]...Modeling')
+    model = Model.modelTopic(doc=df_tokens)
+    """Model over the whole data"""
+    model.lda_model(df=df_tokens)
+
+    # model.model_bigram()
+    model.model_year()
+
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)
