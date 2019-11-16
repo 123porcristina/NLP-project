@@ -21,6 +21,11 @@ Flash
 
 ` pip install flask `
 
+For plotly:
+conda install -c conda-forge wordcloud
+
+
+
 
 Startup
 ---
