@@ -3,8 +3,10 @@ from Code import PreprocessingSpeech as ps
 from Code import Model
 from pathlib import Path
 import pandas as pd
+
 pd.set_option('display.width', 2000)
-pd.set_option('display.max_columns',10)
+pd.set_option('display.max_columns', 10)
+
 
 def main():
     dir_base = (str(Path(__file__).parents[1]) + '/Data')
@@ -20,36 +22,35 @@ def main():
     # save_df.save_dataframe()
 
     """Read the pickle file"""
-    print('[INFO]...Loading Pickle')
-    df_file = pd.read_pickle(dir_base+"/df_data.pickle")
+    # print('[INFO]...Loading Pickle')
+    # df_file = pd.read_pickle(dir_base+"/df_data.pickle")
 
     """Preprocessing texts"""
     # print('[INFO]...Preprocessing')
     # preprocessing = ps.Preprocessing(speeches=df_file)
+    # preprocessing.add_regions()
     # clean_tokens = preprocessing.clean_data()
-    # print('\n'.join('{}: {}'.format(*k) for k in enumerate(clean_tokens)))
-
+    # # print('\n'.join('{}: {}'.format(*k) for k in enumerate(clean_tokens)))
 
     """Save the new Dataframe structure locally into a pickle file to easiness of use"""
-    print('[INFO]...Saving Pickle')
-    name = 'df_tokens'
+    # print('[INFO]...Saving Pickle')
+    # name = 'df_tokens'
     # save_df = ReadText.SaveDf(dir_base, clean_tokens, name)
     # save_df.save_dataframe()
 
     """Read the new Dataframe with the tokens"""
     print('[INFO]...Reading pickle tokens')
-    df_tokens = pd.read_pickle(dir_base+"/df_tokens.pickle")
+    df_tokens = pd.read_pickle(dir_base + "/df_tokens.pickle")
     print(df_tokens)
 
     """LDA Model"""
     print('[INFO]...Modeling')
-    model = Model.modelTopic(doc=df_tokens)
     """Model over the whole data"""
-    model.lda_model(df=df_tokens)
-
-    # model.model_bigram()
+    model = Model.ModelTopic(doc=df_tokens)
+    model.model_bigram()
+    model.lda_model()
     model.model_year()
-
+    model.model_region()
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)
@@ -63,8 +64,5 @@ def main():
     # high_prob_bigram = speech.mle_bigram(freq_bi_curr, freq_bi_base, bigrams_doc, len(tokenWord_curr))
 
 
-main()
-
-
-
-
+if __name__ == '__main__':
+    main()
