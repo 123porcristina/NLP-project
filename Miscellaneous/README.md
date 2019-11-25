@@ -7,10 +7,14 @@ pip install
 ` pip install PyPDF2 `
 ` pip install gensim `
 ` pip install python-docx `
+` pip install dash-bootstrap-components `
 
 Install only if we will use pdfminer:
 pip install pdfpages
 conda install -c conda-forge pdfminer3k
+
+pip install pyLDAvis
+https://pyldavis.readthedocs.io/en/latest/modules/API.html
 
 Dash
 

@@ -1,10 +1,12 @@
 import os
-from flask import Flask, render_template, flash, request, redirect, url_for, send_file
+from flask import Flask, render_template, flash, request, redirect, url_for, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from NLP_package.dashboard import app
 
-UPLOAD_FOLDER = './uploads/'
-PREPROCESSED_FOLDER = './processed_files/'
+
+UPLOAD_FOLDER = '../uploads/'
+STATIC_FOLDER = './static/'
+PREPROCESSED_FOLDER = '/processed_files/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'docx', 'csv'}
 
 app.server.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -45,9 +47,17 @@ def upload_file():
 
 @app.server.route('/file', methods=['GET'])
 def return_requested_file():
-    try:
-        if request.args['filename']:
-            filename = request.args['filename']
-            return send_file(f'../{PREPROCESSED_FOLDER}/{filename}')
-    except Exception as e:
-        return str(e)
+    print("[INFO] Download File Requested", request)
+    # try:
+    #     if request.args['filename']:
+    #         filename = request.args['filename']
+    #         print(f'../{PREPROCESSED_FOLDER}/{filename}')
+    #         return send_from_directory(f'../uploads/df_tokens.pickle', )
+    # except Exception as e:
+    #     return str(e)
+    return send_from_directory(UPLOAD_FOLDER, 'df_tokens.csv', as_attachment=True )
+
+@app.server.route('/topic-graphic')
+def return_topic_graphic():
+    return render_template('ida.html')
+
