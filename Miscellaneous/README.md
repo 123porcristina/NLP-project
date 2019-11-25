@@ -13,7 +13,7 @@ Install only if we will use pdfminer:
 pip install pdfpages
 conda install -c conda-forge pdfminer3k
 
-pip install pyLDAvis
+`pip install pyLDAvis`
 https://pyldavis.readthedocs.io/en/latest/modules/API.html
 
 Dash
@@ -26,10 +26,7 @@ Flash
 ` pip install flask `
 
 For plotly:
-conda install -c conda-forge wordcloud
-
-
-
+`conda install -c conda-forge wordcloud`
 
 Startup
 ---
