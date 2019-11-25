@@ -44,6 +44,7 @@ class ReadDoc:
         """
         df_files['speech'] = df_files['speech'].astype(str)
         df_files = df_files[df_files.speech != ""]
+        df_files = df_files.reset_index(drop=True)
 
         return df_files
 
@@ -55,7 +56,7 @@ class ReadDoc:
         doc_text = ""
         for para in doc.paragraphs:
             #doc_text.append(para.text.casefold())
-            doc_text += para.text.casefold()
+            doc_text += para.text#.casefold()
         return doc_text
 
     """RC. This function looks for all the .PDF documents and return just the text for each document"""
@@ -69,7 +70,7 @@ class ReadDoc:
         while count < num_pages:
             try:
                 pageObj = pdfReader.getPage(count)
-                pdf_text += (pageObj.extractText()).casefold()
+                pdf_text += (pageObj.extractText())#.casefold()
                 count += 1
             except Exception as e:
                 print("file : ", root, file_, " -- Error: ", e)
