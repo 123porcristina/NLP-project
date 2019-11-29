@@ -9,7 +9,7 @@ import warnings
 warnings.filterwarnings('ignore')  # To ignore all warnings that arise here to enhance clarity
 import logging # This allows for seeing if the model converges. A log file is created.
 # logging.basicConfig(filename='lda_model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 class ModelTopic:
     def __init__(self, doc):
@@ -51,6 +51,21 @@ class ModelTopic:
         print("Printing bigrams")
         print('\n'.join('{}: {}'.format(*k) for k in enumerate(self.doc.bigram_speech)))
 
+        ##test to know frequency
+        from collections import Counter
+        words = self.doc.token_speech.sum()
+        word_freq = Counter(words)
+        common_words = word_freq.most_common(200)
+        print("Most frequent tokens:")
+        print(common_words)
+
+        words = self.doc.bigram_speech.sum()
+        word_freq = Counter(words)
+        common_words = word_freq.most_common(200)
+        print("Most frequent BIGRAMS:")
+        print(common_words)
+        ###
+
 
     def lda_model(self):
 
@@ -60,6 +75,7 @@ class ModelTopic:
         dct = Dictionary(texts)
 
         """Remove High Frequent and Low Frequent Words"""
+        # Filter out words that occur less than 1 documents, or more than 50% of the documents.
         dct.filter_extremes(no_below=5, no_above=0.5)
 
         """converts speech to bag of words"""
@@ -67,10 +83,18 @@ class ModelTopic:
 
         """instance the model"""
         Lda = gensim.models.ldamodel.LdaModel
-        lda_model = Lda(doc_term_matrix, num_topics=80, id2word=dct)
+        # Lda = gensim.models.ldamulticore
+        lda_model = Lda(doc_term_matrix, num_topics=80, id2word=dct,
+                        chunksize=100,
+                        alpha='auto',
+                        eta='auto',
+                        iterations=400,
+                        passes=200,
+                        eval_every=None
+                        )
 
         print("[INFO] Processing Topics...")
-        for idx, topic in lda_model.show_topics(num_topics=80, formatted=False, num_words=15):
+        for idx, topic in lda_model.show_topics(num_topics=80, formatted=False, num_words=10):
             print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
 
         """save the file for now"""
@@ -81,10 +105,10 @@ class ModelTopic:
         coherence_lda = coherence_model_lda.get_coherence()
         print('\nCoherence Score: ', coherence_lda)
 
-        # import pyLDAvis.gensim
-        # vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15)
-        # # pyLDAvis.display(vis)
-        # pyLDAvis.show(vis)
+        import pyLDAvis.gensim
+        vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=10)
+        # pyLDAvis.display(vis)
+        pyLDAvis.show(vis)
 
         return lda_model
 

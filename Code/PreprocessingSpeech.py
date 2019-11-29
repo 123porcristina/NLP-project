@@ -1,10 +1,12 @@
 from spacy.lang.en.stop_words import STOP_WORDS
 import string
-import en_core_web_sm
+# import en_core_web_sm
+import en_core_web_lg
 import time
 import pandas as pd
 
-nlp = en_core_web_sm.load()
+# nlp = en_core_web_sm.load()
+nlp = en_core_web_lg.load()
 
 
 class Preprocessing:
@@ -66,6 +68,7 @@ class Preprocessing:
     def remove_entities(filtered_word):
         filtered_entities = []
         doc = nlp(str(filtered_word))
-        entities = ([X.text for X in doc.ents])
+        # entities = ([X.text for X in doc.ents])
+        entities = ['PERSON', 'NORP', 'GPE', 'LOC', 'WORK_OF_ART', 'DATE', 'TIME', 'ORDINAL', 'CARDINAL']
         filtered_entities += ([word for word in filtered_word if word not in entities])
         return filtered_entities
