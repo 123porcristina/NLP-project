@@ -70,31 +70,30 @@ class ModelTopic:
     def lda_model(self):
 
         self.doc['combined'] = (self.doc.bigram_speech + self.doc.token_speech) #(self.doc.token_speech + self.doc.bigram_speech)
-        # texts = self.doc['combined'].dropna()
-        texts=self.doc.bigram_speech.dropna() #
+        texts = self.doc['combined'].dropna()
+        # texts=self.doc.bigram_speech.dropna() #
         dct = Dictionary(texts)
 
         """Remove High Frequent and Low Frequent Words"""
         # Filter out words that occur less than 1 documents, or more than 50% of the documents.
-        dct.filter_extremes(no_below=5, no_above=0.5)
+        dct.filter_extremes(no_below=5, no_above=0.4)
 
         """converts speech to bag of words"""
         doc_term_matrix = [dct.doc2bow(doc) for doc in texts]
 
         """instance the model"""
         Lda = gensim.models.ldamodel.LdaModel
-        # Lda = gensim.models.ldamulticore
-        lda_model = Lda(doc_term_matrix, num_topics=80, id2word=dct,
+        lda_model = Lda(doc_term_matrix, num_topics=100, id2word=dct,
                         chunksize=100,
-                        alpha='auto',
+                        alpha=0.7,#'auto',
                         eta='auto',
-                        iterations=400,
-                        passes=200,
+                        # iterations=400,
+                        passes=500,
                         eval_every=None
                         )
 
         print("[INFO] Processing Topics...")
-        for idx, topic in lda_model.show_topics(num_topics=80, formatted=False, num_words=10):
+        for idx, topic in lda_model.show_topics(num_topics=100, formatted=False, num_words=15):
             print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
 
         """save the file for now"""
@@ -106,7 +105,7 @@ class ModelTopic:
         print('\nCoherence Score: ', coherence_lda)
 
         import pyLDAvis.gensim
-        vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=10)
+        vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15, mds='mmds')
         # pyLDAvis.display(vis)
         pyLDAvis.show(vis)
 
