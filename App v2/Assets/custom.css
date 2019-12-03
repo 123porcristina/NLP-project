@@ -1,0 +1,268 @@
+body{
+    background-color: rgb(35, 35, 35);
+    }
+
+.header{
+    height: 75px;
+    margin: -10px -10px -10px;
+    top: 0;
+    background-color: rgb(50, 50, 50);
+    border-radius: 2px;
+}
+.header h2{
+    color: white;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    position: absolute;
+    margin-left: 2%;
+    display: inline-block;
+}
+.header Img{
+    position: relative;
+    float: left;
+    left: 10px;
+    height: 75px;
+}
+
+.div-dcc-container {
+    width: 400px;
+    height: 550px;
+    margin-left: 80px;
+    margin-top: 80px;
+    margin-right: 0;
+    font-size: 10pt;
+    float: left;
+    background-color: rgb(50, 50, 50);
+}
+
+/*DIV CONTAINER*/
+.custom-tabs-container {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    width: 100%;
+    color: rgb(50, 50, 50);
+}
+
+.custom-tabs {
+    color: white;
+    background-color: rgb(50, 50, 50);
+}
+
+.custom-tab {
+    color: white;
+    border-color: white;
+    background-color: rgb(50, 50, 50) !important;
+    padding: 12px !important;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.H4-text {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 20pt;
+    text-align: center;
+    font-weight: 400;
+    padding-bottom: 5px;
+}
+
+.P-text {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: 200;
+    font-size: 10pt;
+    text-align: justify;
+    padding-top: 35px;
+    margin-left: 20pt;
+    margin-right: 20pt;
+}
+
+.custom-tab--selected {
+    color: #FFBF00 !important;
+    border-top-left-radius: 3px;
+    border-top: 3px solid #FFBF00 !important;
+    border-bottom-color: rgb(50, 50, 50) !important;
+    display: flex !important;
+    padding: 12px !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-upload {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    display: block;
+    border: dotted 1px #FFBF00 !important;
+    border-radius: 5px;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 60px;
+    font-size: 9pt;
+    text-align: center;
+}
+
+
+.loaded-dataset-text {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: 200;
+    font-size: 10pt;
+    text-align: justify;
+    padding-top: 35px;
+    padding-bottom: 15px;
+    margin-left: 20px;
+}
+
+.control-upload-dropdown {
+    margin-left: 20px;
+    margin-right: 20px;
+    color: rgb(50, 50, 50) !important;
+    background-color: transparent !important;
+    border-color: #FFBF00 !important;
+}
+
+
+.div-right-speech {
+    width: 900px;
+    height: 550px;
+    margin-left: 180px;
+    margin-top: 80px;
+    font-size: 10pt;
+    float: left;
+    background-color: rgb(50, 50, 50);
+    color: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.div-right-speech H4{
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    text-align: center;
+    font-size: 20pt;
+}
+
+.div-right-speech P{
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: 200;
+    font-size: 10pt;
+    text-align: justify;
+    padding-top: 5px;
+    margin-left: 20pt;
+    margin-right: 20pt;
+}
+
+
+#div-right-speech ::-webkit-scrollbar {
+    width: 4px;
+    height: 0px;
+    background-color: #191A1C !important;
+}
+
+
+#div-right-speech ::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    width: 2px;
+    border-radius: 15px;
+    padding-right: 5px;
+    background-color: #FFBF00 !important;
+}
+
+.div-text-radio-items{
+    /*padding-top: 10px;*/
+    margin-top: 30px;
+    margin-left: 20px;
+    height: 40px;
+    width: 360px;
+}
+
+
+.text_radio-items {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 10pt;
+    text-align: left;
+    font-weight: 400;
+    float: left;
+    vertical-align: middle
+}
+
+.radio-items{
+    /*margin-top: 40px;*/
+    margin-right: 20px;
+    float:right;
+    color: white !important;
+    background-color: transparent !important;
+    border-color: #FFBF00 !important;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 10pt;
+    vertical-align: middle
+}
+
+#radio-items input:checked {
+  background-color: #FFBF00;
+  border-color: #FFBF00;
+}
+
+.div-preprocess-button{
+    margin-top: 140px;
+    margin-left: 5px;
+    height: 40px;
+    width: 360px;
+    float: left;
+}
+
+.button-preprocess{
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    float: left;
+    margin-left: 30px;
+    font-size: 10pt !important;
+    line-height: 10pt;
+    padding: 0px !important;
+    color: #E4E4E4;
+    font-weight: 100;
+    border-color: white;
+    text-align: center;
+    width: 140px;
+    height: 50px;
+    margin-top: 5px;
+    transition-duration: 500ms;
+    background-color: rgb(50, 50, 50) !important;
+    border-radius: 4px;
+}
+
+.button-preprocess:hover{
+       border-color: #FFBF00;
+       color: #FFBF00;
+}
+
+.button-preprocess:focus{
+       border-color: #FFBF00;
+       color: #FFBF00;
+        outline: none;
+}
+
+.div-right-preprocessing {
+    width: 1000px;
+    height: 500px;
+    margin-left: 60px;
+    margin-top: 30px;
+    font-size: 10pt;
+    float: left;
+    background-color: rgb(35, 35, 35);
+    color: white;
+}
+
+.div-table-upload{
+    width: 1500px;
+    height: 600px;
+    margin-left: 140px;
+    margin-top: 30px;
+    font-size: 10pt;
+    float: left;
+    background-color: rgb(35, 35, 35);
+    color: white;
+}
+
+.title-speech-dataset{
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    text-align: center;
+    font-size: 20pt;
+}
+
