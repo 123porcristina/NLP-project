@@ -6,10 +6,13 @@ import gensim
 from gensim.test.utils import datapath
 from gensim.models.coherencemodel import CoherenceModel
 import warnings
+
 warnings.filterwarnings('ignore')  # To ignore all warnings that arise here to enhance clarity
-import logging # This allows for seeing if the model converges. A log file is created.
+import logging  # This allows for seeing if the model converges. A log file is created.
+
 # logging.basicConfig(filename='lda_model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
 
 class ModelTopic:
     def __init__(self, doc):
@@ -23,7 +26,7 @@ class ModelTopic:
         """Applies LDA model"""
         df_year = self.model_unseen(df_year)
 
-        return df_year#self.doc.groupby(['year']).sum().reset_index()
+        return df_year  # self.doc.groupby(['year']).sum().reset_index()
 
     def model_region(self):
         """dataframe grouped by year"""
@@ -41,7 +44,7 @@ class ModelTopic:
         bi_word = {}
         bigram = gensim.models.Phrases(self.doc['token_speech'])
         for idx in range(len(self.doc['token_speech'])):
-            try:#row 16 does not exist. Maybe the pickle is corrupt? check!!!
+            try:  # row 16 does not exist. Maybe the pickle is corrupt? check!!!
                 [bi_token.append(token) for token in bigram[self.doc.token_speech[idx]] if '_' in token]
                 bi_word.update({idx: bi_token})
                 bi_token = []
@@ -66,10 +69,9 @@ class ModelTopic:
         print(common_words)
         ###
 
-
-    def lda_model(self):
-
-        self.doc['combined'] = (self.doc.bigram_speech + self.doc.token_speech) #(self.doc.token_speech + self.doc.bigram_speech)
+    def lda_model(self, num_topics):
+        self.doc['combined'] = (
+                self.doc.bigram_speech + self.doc.token_speech)  # (self.doc.token_speech + self.doc.bigram_speech)
         texts = self.doc['combined'].dropna()
         # texts=self.doc.bigram_speech.dropna() #
         dct = Dictionary(texts)
@@ -83,9 +85,9 @@ class ModelTopic:
 
         """instance the model"""
         Lda = gensim.models.ldamodel.LdaModel
-        lda_model = Lda(doc_term_matrix, num_topics=100, id2word=dct,
+        lda_model = Lda(doc_term_matrix, num_topics=num_topics, id2word=dct,
                         chunksize=100,
-                        alpha=0.7,#'auto',
+                        alpha='auto',
                         eta='auto',
                         # iterations=400,
                         passes=500,

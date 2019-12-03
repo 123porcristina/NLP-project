@@ -48,7 +48,7 @@ def main():
     """Model over the whole data"""
     model = Model.ModelTopic(doc=df_tokens)
     model.model_bigram()
-    model.lda_model()
+    model.lda_model(num_topics=100) #change 100 for the vble in plotly
     model.model_year()
     model.model_region()
 
