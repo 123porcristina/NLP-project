@@ -8,10 +8,10 @@ from gensim.models.coherencemodel import CoherenceModel
 import warnings
 
 warnings.filterwarnings('ignore')  # To ignore all warnings that arise here to enhance clarity
-import logging  # This allows for seeing if the model converges. A log file is created.
+# import logging  # This allows for seeing if the model converges. A log file is created.
 
 # logging.basicConfig(filename='lda_model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+# logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
 class ModelTopic:
@@ -90,12 +90,12 @@ class ModelTopic:
                         alpha='auto',
                         eta='auto',
                         # iterations=400,
-                        passes=500,
+                        passes=300,
                         eval_every=None
                         )
 
         print("[INFO] Processing Topics...")
-        for idx, topic in lda_model.show_topics(num_topics=100, formatted=False, num_words=15):
+        for idx, topic in lda_model.show_topics(num_topics=num_topics, formatted=False, num_words=15):
             print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
 
         """save the file for now"""
