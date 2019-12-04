@@ -486,11 +486,29 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                             children=['Accuracy: ', f'{coherence_lda*100:.2f}', '%'])]
                                             ),
 
-                        html.Div(id='div-lda-graphs', className='div-lda-graphs',
-                                 children=[' This is the area for the graph'
-                                            ])
-
-                        ])
+                        html.Div(id='div-lda-graphs',
+                                 className='div-lda-graphs',
+                                 children=[
+                                     html.Iframe(
+                                         src=app.get_asset_url('lda.html'),
+                                         height="100%",
+                                         width='100%',
+                                         style={
+                                             'border-style': 'none',
+                                             'align': 'middle',
+                                             'margin': 'auto',
+                                             'background-color': 'darkgrey'
+                                         }
+                                     ),
+                                     "HelloWorld"
+                                    ],
+                                    style={
+                                        'max-width': '1250px',
+                                        'height': '860px'
+                                    }
+                                )
+                            ]
+                        )
 
 
 
