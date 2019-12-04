@@ -41,16 +41,16 @@ def main():
     """Read the new Dataframe with the tokens"""
     print('[INFO]...Reading pickle tokens')
     df_tokens = pd.read_pickle(dir_base + "/df_tokens.pickle")
-    print(df_tokens)
+    # print(df_tokens)
 
     """LDA Model"""
     print('[INFO]...Modeling')
     """Model over the whole data"""
     model = Model.ModelTopic(doc=df_tokens)
     model.model_bigram()
-    model.lda_model(num_topics=100) #change 100 for the vble in plotly
-    model.model_year()
-    model.model_region()
+    model.lda_model(num_topics=10, chunksize=100, alpha='auto', eta='auto', passes=300) #change 100 for the vble in plotly
+    # model.model_year()
+    # model.model_region()
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)

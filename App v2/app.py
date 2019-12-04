@@ -162,21 +162,24 @@ app.layout = html.Div([
                                                                 {'label': 'yes', 'value': 'yes'},
                                                                 {'label': 'no', 'value': 'no'},
                                                             ]),
-                                        html.Div(
-                                            id='div-preprocess-button',
-                                            className='div-preprocess-button',
-                                            children=[
-                                                html.Button('Run Preprocessing',
-                                                            id='button-preprocess',
-                                                            n_clicks=0,
-                                                            className='button-preprocess'),
-                                                html.Button('Reset Preprocessing',
-                                                            id='button-reset',
-                                                            n_clicks=0,
-                                                            className='button-preprocess')
-                                        ])
-                                         ]),
-                                 ]),  # End Tab PREPROCESSING
+                                            ]),
+
+                                     html.Div(
+                                         id='div-preprocess-button',
+                                         className='div-preprocess-button',
+                                         children=[
+                                             html.Button('Run Preprocessing',
+                                                         id='button-preprocess',
+                                                         n_clicks=0,
+                                                         className='button-preprocess-run'),
+                                             html.Button('Reset Preprocessing',
+                                                         id='button-reset',
+                                                         n_clicks=0,
+                                                         className='button-preprocess-run')
+                                         ])
+                                 ]),  # End Tab MODEL LDA
+
+################### START DCC TABS  - LDA MODEL ###################
 
 ################### START DCC TABS  - LDA MODEL ###################
                          dcc.Tab(label='LDA Model',
@@ -184,8 +187,89 @@ app.layout = html.Div([
                                  className='custom-tab',
                                  selected_className='custom-tab--selected',
                                  children=[
-                                     html.H4(className='H4-text', children='TAB 4'),
+                                     html.Div(
+                                         id='div-text-num-topics',
+                                         className='div-text-radio-items',
+                                         children=[
+                                             html.P(id='text-num-topics',
+                                                    className='text_radio-items',
+                                                    children=['Number of topics: ']),
 
+                                             dcc.Input(id='text-field-num-topics',
+                                                       value='10',
+                                                       type='number',
+                                                       className='text-lda'),
+
+                                         ]),
+                                     html.Div(
+                                         id='div-text-chunksize',
+                                         className='div-text-radio-items',
+                                         children=[
+                                             html.P(id='text-chunksize',
+                                                    className='text_radio-items',
+                                                    children=['Chunksize: ']),
+
+                                             dcc.Input(id='text-field-chunksize',
+                                                       value='100',
+                                                       type='number',
+                                                       className='text-lda'),
+                                         ]),
+
+                                     html.Div(
+                                         id='div-text-alpha',
+                                         className='div-text-radio-items',
+                                         children=[
+                                             html.P(id='text-alpha:',
+                                                    className='text_radio-items',
+                                                    children=['Alpha: ']),
+
+                                             dcc.Input(id='text-field-alpha',
+                                                       value='auto',
+                                                       type='text',
+                                                       className='text-lda'),
+
+                                            ]),
+
+                                     html.Div(
+                                         id='div-text-eta',
+                                         className='div-text-radio-items',
+                                         children=[
+                                             html.P(id='text-eta:',
+                                                    className='text_radio-items',
+                                                    children=['ETA: ']),
+
+                                             dcc.Input(id='text-field-eta',
+                                                       value='auto',
+                                                       type='text',
+                                                       className='text-lda'),
+
+
+                                         ]),
+
+                                     html.Div(
+                                         id='div-text-passes',
+                                         className='div-text-radio-items',
+                                         children=[
+                                             html.P(id='text-passes:',
+                                                    className='text_radio-items',
+                                                    children=['Passes: ']),
+
+                                             dcc.Input(id='text-field-passes',
+                                                       value='300',
+                                                       type='number',
+                                                       className='text-lda'),
+
+                                         ]),
+
+                                     html.Div(
+                                         id='div-lda-button',
+                                         className='div-preprocess-button-lda',
+                                         children=[
+                                             html.Button('Run LDA Model',
+                                                         id='button-lda',
+                                                         n_clicks=0,
+                                                         className='button-lda'),
+                                         ])
                                  ]),
                      ]),
         ]),
@@ -243,7 +327,7 @@ def update_output(n_clicks):
                                     'width': '100px'
                                 },
                                 fixed_rows={'headers': True, 'data': 0},
-                                fixed_columns={'headers': True, 'data': 3},
+                                fixed_columns={'headers': True, 'data': 4},
                                 style_table={'overflowX': 'scroll', 'minWidth': '100%'}
                             )
                         ])
@@ -282,7 +366,7 @@ def update_output(n_clicks):
                                     'width': '100px'
                                 },
                                 fixed_rows={'headers': True, 'data': 0},
-                                fixed_columns={'headers': True, 'data': 4},
+                                fixed_columns={'headers': True, 'data': 5},
                                 style_table={'overflowX': 'scroll', 'minWidth': '100%'}
                             )
                                 ])  # End Right Div - Table for tab 3
@@ -309,8 +393,6 @@ def display_content(selected_tab):
 
     elif selected_tab == 'tab-3':
         return html.Div(id='div-right-preprocessing')  # End Right Div - Table for tab 3
-
-
 
 
 

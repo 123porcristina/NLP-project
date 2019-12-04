@@ -69,7 +69,7 @@ class ModelTopic:
         print(common_words)
         ###
 
-    def lda_model(self, num_topics):
+    def lda_model(self, num_topics, chunksize, alpha, eta, passes):
         self.doc['combined'] = (
                 self.doc.bigram_speech + self.doc.token_speech)  # (self.doc.token_speech + self.doc.bigram_speech)
         texts = self.doc['combined'].dropna()
@@ -86,11 +86,11 @@ class ModelTopic:
         """instance the model"""
         Lda = gensim.models.ldamodel.LdaModel
         lda_model = Lda(doc_term_matrix, num_topics=num_topics, id2word=dct,
-                        chunksize=100,
-                        alpha='auto',
-                        eta='auto',
+                        chunksize=chunksize,
+                        alpha=alpha,
+                        eta=eta,
                         # iterations=400,
-                        passes=300,
+                        passes=passes,
                         eval_every=None
                         )
 
@@ -108,8 +108,9 @@ class ModelTopic:
 
         import pyLDAvis.gensim
         vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15, mds='mmds')
-        # pyLDAvis.display(vis)
-        pyLDAvis.show(vis)
+        pyLDAvis.display(vis)
+        # pyLDAvis.show(vis)
+        pyLDAvis.save_html(vis, 'lda.html')
 
         return lda_model
 

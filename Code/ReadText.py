@@ -21,7 +21,8 @@ class ReadDoc:
                     city_text = re.split(', |\(', file_)[0]
                     state_text = re.search('[A-Z]+[A-Z]', file_)[0]
                     year_text = re.findall(r'.*([1-3][0-9]{3})', (os.path.join(root, file_)))[0]
-                    df_files = df_files.append({'city': city_text,
+                    df_files = df_files.append({
+                                                'city': city_text,
                                                 'state': state_text,
                                                 'year': year_text,
                                                 'type_doc': '.docx',
