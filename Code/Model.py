@@ -107,11 +107,11 @@ class ModelTopic:
         coherence_lda = coherence_model_lda.get_coherence()
         # print('\nCoherence Score: ', coherence_lda)
 
-        # import pyLDAvis.gensim
-        # vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15, mds='mmds')
+        import pyLDAvis.gensim
+        vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15, mds='mmds')
         # pyLDAvis.display(vis)
         # # pyLDAvis.show(vis)
-        # pyLDAvis.save_html(vis, 'lda.html')
+        pyLDAvis.save_html(vis, '../App v2/assets/lda.html')
 
         return lda_model, coherence_lda
 
