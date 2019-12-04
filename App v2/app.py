@@ -1,19 +1,65 @@
+import datetime
+
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 import dash_table as dt
-from Code import main
 import pandas as pd
 from pathlib import Path
+from Code import ReadText
+from Code import PreprocessingSpeech as ps
+from Code import Model
+from pathlib import Path
+import pandas as pd
 
+################################################################################
+###
+### IMPORT DATA
+###
+################################################################################
 dir_base = (str(Path(__file__).parents[1]) + '/Data')
+
 df_file = pd.read_pickle(dir_base + "/df_data.pickle")
 df_tokens = pd.read_pickle(dir_base + "/df_tokens.pickle")
+df_lda = pd.read_pickle(dir_base + "/df_lda.pickle")
 del df_tokens['speech']
 df_tokens['token_speech'] = df_tokens['token_speech'].astype('str')
 
+################################################################################
+###
+### RUN MODEL
+###
+################################################################################
 
+"""Model over the whole data"""
+# model = Model.ModelTopic(doc=df_lda)
+# bigram_speech, common_words = model.model_bigram()
+# print(type(common_words))
+
+# lda_result, coherence_lda = model.lda_model(num_topics=10, chunksize=100, alpha='auto', eta='auto', passes=300)  # change 100 for the vble in plotly
+# print(coherence_lda)
+
+# list_lda = []
+# for idx, topic in lda_result.show_topics(num_topics=10, formatted=False, num_words=15):
+#     print('Topic: {} \tWords: {}\n'.format(idx, '|'.join([w[0] for w in topic])))
+#     list_lda.append(('Topic: {} \tWords: {}\n'.format(idx, '|'.join([w[0] for w in topic]))))
+#
+# lda_str = ''.join(list_lda)
+
+
+
+
+
+
+# model.model_year()
+# model.model_region()
+
+################################################################################
+###
+### APP LAYOUT
+###
+################################################################################
 app = dash.Dash(__name__)
 app.css.append_css({'external_url': 'static/custom.css'})
 app.config['suppress_callback_exceptions'] = True
@@ -179,7 +225,6 @@ app.layout = html.Div([
                                          ])
                                  ]),  # End Tab MODEL LDA
 
-################### START DCC TABS  - LDA MODEL ###################
 
 ################### START DCC TABS  - LDA MODEL ###################
                          dcc.Tab(label='LDA Model',
@@ -196,7 +241,7 @@ app.layout = html.Div([
                                                     children=['Number of topics: ']),
 
                                              dcc.Input(id='text-field-num-topics',
-                                                       value='10',
+                                                       value=15,
                                                        type='number',
                                                        className='text-lda'),
 
@@ -210,7 +255,7 @@ app.layout = html.Div([
                                                     children=['Chunksize: ']),
 
                                              dcc.Input(id='text-field-chunksize',
-                                                       value='100',
+                                                       value=100,
                                                        type='number',
                                                        className='text-lda'),
                                          ]),
@@ -287,6 +332,8 @@ app.layout = html.Div([
 ### CALLBACKS
 ###
 ################################################################################
+
+
 
 #FUNCTION TAB 2 - SHOW TABLE BEFORE PREPROCESS
 
@@ -392,7 +439,58 @@ def display_content(selected_tab):
                         ])  # End Right Div - Speeches
 
     elif selected_tab == 'tab-3':
-        return html.Div(id='div-right-preprocessing')  # End Right Div - Table for tab 3
+        return html.Div(id='div-right-preprocessing')  # End Right Div - Table for tab
+
+    elif selected_tab == 'tab-4':
+        return html.Div(id='div-right-lda')  # End Right Div - Table for tab 3
+
+
+#RUN LDA MODEL - INPUT HYPERPARAMETERS LDA
+@app.callback(Output('div-right-lda', 'children'),
+              [Input('button-lda', 'n_clicks')],
+              [State('text-field-num-topics', 'value'),
+               State('text-field-chunksize', 'value'),
+               State('text-field-alpha', 'value'),
+               State('text-field-eta', 'value'),
+               State('text-field-passes', 'value')])
+def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
+    if n_clicks >= 1:
+        model = Model.ModelTopic(doc=df_lda)
+        bigram_speech, common_words = model.model_bigram()
+        lda_result, coherence_lda = model.lda_model(num_topics=int(num_topics),
+                                                    chunksize=int(chunksize),
+                                                    alpha=alpha,
+                                                    eta=eta,
+                                                    passes=int(passes))
+
+        list_lda = []
+        for idx, topic in lda_result.show_topics(num_topics=int(num_topics), formatted=False, num_words=15):
+            list_lda.append(('Topic: {} \tWords: {}\n'.format(idx, '|'.join([w[0] for w in topic]))))
+
+        lda_str = ''.join(list_lda)
+
+        return html.Div(id='content-lda',
+                        className='div-lda',
+                        children=[
+                        html.Div(id='lda-text-result', className='lda-text-result',
+                                 children=[
+                                     html.H4(id='lda-result-title',
+                                     className='lda-result-title',
+                                     children=['LIST OF TOPICS']),
+
+                                    html.Textarea(id='lda-text-area',
+                                                  className='lda-text-area',
+                                                  children=[lda_str]),
+                                    html.H3(id='lda-accuracy',
+                                            className='lda-accuracy',
+                                            children=['Accuracy: ', f'{coherence_lda*100:.2f}', '%'])]
+                                            ),
+
+                        html.Div(id='div-lda-graphs', className='div-lda-graphs',
+                                 children=[' This is the area for the graph'
+                                            ])
+
+                        ])
 
 
 

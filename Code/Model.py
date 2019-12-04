@@ -51,22 +51,23 @@ class ModelTopic:
             except:
                 pass
         self.doc['bigram_speech'] = self.doc.index.map(bi_word)
-        print("Printing bigrams")
-        print('\n'.join('{}: {}'.format(*k) for k in enumerate(self.doc.bigram_speech)))
+        # print("Printing bigrams")
+        # print('\n'.join('{}: {}'.format(*k) for k in enumerate(self.doc.bigram_speech)))
 
         ##test to know frequency
         from collections import Counter
         words = self.doc.token_speech.sum()
         word_freq = Counter(words)
         common_words = word_freq.most_common(200)
-        print("Most frequent tokens:")
-        print(common_words)
+        # print("Most frequent tokens:")
+        # print(common_words)
 
         words = self.doc.bigram_speech.sum()
         word_freq = Counter(words)
         common_words = word_freq.most_common(200)
-        print("Most frequent BIGRAMS:")
-        print(common_words)
+        # print("Most frequent BIGRAMS:")
+        # print(common_words)
+        return self.doc.bigram_speech, common_words
         ###
 
     def lda_model(self, num_topics, chunksize, alpha, eta, passes):
@@ -94,9 +95,9 @@ class ModelTopic:
                         eval_every=None
                         )
 
-        print("[INFO] Processing Topics...")
-        for idx, topic in lda_model.show_topics(num_topics=num_topics, formatted=False, num_words=15):
-            print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
+        # print("[INFO] Processing Topics...")
+        # for idx, topic in lda_model.show_topics(num_topics=num_topics, formatted=False, num_words=15):
+        #     print('Topic: {} \tWords: {}'.format(idx, '|'.join([w[0] for w in topic])))
 
         """save the file for now"""
         lda_model.save(self.temp_file)
@@ -104,15 +105,15 @@ class ModelTopic:
         """Coherence Score"""
         coherence_model_lda = CoherenceModel(model=lda_model, texts=texts, dictionary=dct, coherence='c_v')
         coherence_lda = coherence_model_lda.get_coherence()
-        print('\nCoherence Score: ', coherence_lda)
+        # print('\nCoherence Score: ', coherence_lda)
 
-        import pyLDAvis.gensim
-        vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15, mds='mmds')
-        pyLDAvis.display(vis)
-        # pyLDAvis.show(vis)
-        pyLDAvis.save_html(vis, 'lda.html')
+        # import pyLDAvis.gensim
+        # vis = pyLDAvis.gensim.prepare(lda_model, doc_term_matrix, dct, R=15, mds='mmds')
+        # pyLDAvis.display(vis)
+        # # pyLDAvis.show(vis)
+        # pyLDAvis.save_html(vis, 'lda.html')
 
-        return lda_model
+        return lda_model, coherence_lda
 
     def model_unseen(self, df):
         lda = LdaModel.load(self.temp_file)

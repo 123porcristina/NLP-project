@@ -352,3 +352,74 @@ body{
   background-color: #FFBF00;
   border-color: #FFBF00;
 }
+
+
+.div-right-lda{
+    width: 1500px;
+    height: 600px;
+    margin-left: 140px;
+    margin-top: 30px;
+    font-size: 10pt;
+    float: left;
+    background-color: rgb(35, 35, 35);
+    color: white;
+}
+
+.lda-text-result {
+    width: 800px;
+    height: 600px;
+    margin-left: 180px;
+    margin-top: 80px;
+    font-size: 10pt;
+    float: left;
+    background-color:  rgb(35, 35, 35);
+    color: white;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.lda-text-result H4{
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    text-align: left;
+    font-size: 16px;
+    margin-left: 20px;
+}
+
+.lda-text-area {
+    width: 750px;
+    height: 400px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 9pt;
+    float: left;
+    background-color: rgb(35, 35, 35);
+    color: white;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    border: None;
+    resize: None;
+    overflow-wrap: normal;
+}
+
+.lda-accuracy{
+    font-family:  "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    text-align: left;
+    font-size: 14pt;
+    margin-left: 20px;
+    margin-top: 30px;
+    color: #FFBF00;
+}
+
+.div-lda-graphs {
+    width: 1500px;
+    height: 800px;
+    margin-left: 140px;
+    margin-top: 80px;
+    font-size: 10pt;
+    float: left;
+    background-color: rgb(50, 50, 50);
+    color: white;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
