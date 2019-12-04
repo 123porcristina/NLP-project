@@ -48,9 +48,15 @@ def main():
     """Model over the whole data"""
     model = Model.ModelTopic(doc=df_tokens)
     model.model_bigram()
-    model.lda_model(num_topics=10, chunksize=100, alpha='auto', eta='auto', passes=300) #change 100 for the vble in plotly
-    # model.model_year()
-    # model.model_region()
+    lda_model, _, doc_term_matrix, texts = model.lda_model(num_topics=100, chunksize=100, alpha='auto', eta='auto', passes=200)
+    """Apply model per year"""
+    model.model_year()
+    """Apply model per region"""
+    model.model_region()
+    """most representative topics for each doc"""
+    # _, sent_topics_df = model.format_topics_sentences(lda_model, doc_term_matrix, texts)
+    # model.top_five(sent_topics_df=sent_topics_df)
+
 
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)

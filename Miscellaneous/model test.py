@@ -70,15 +70,14 @@ class ModelTopic:
         ###
 
     def lda_model(self, num_topics):
-        self.doc['combined'] = (
-                self.doc.bigram_speech + self.doc.token_speech)  # (self.doc.token_speech + self.doc.bigram_speech)
+        # self.doc['combined'] = (self.doc.bigram_speech + self.doc.token_speech)  # (self.doc.token_speech + self.doc.bigram_speech)
         texts = self.doc['combined'].dropna()
         # texts=self.doc.bigram_speech.dropna() #
         dct = Dictionary(texts)
 
         """Remove High Frequent and Low Frequent Words"""
         # Filter out words that occur less than 1 documents, or more than 50% of the documents.
-        dct.filter_extremes(no_below=5, no_above=0.5)
+        dct.filter_extremes(no_below=5, no_above=0.4)
 
         """converts speech to bag of words"""
         doc_term_matrix = [dct.doc2bow(doc) for doc in texts]

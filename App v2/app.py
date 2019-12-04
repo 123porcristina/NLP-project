@@ -457,7 +457,7 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
     if n_clicks >= 1:
         model = Model.ModelTopic(doc=df_lda)
         bigram_speech, common_words = model.model_bigram()
-        lda_result, coherence_lda = model.lda_model(num_topics=int(num_topics),
+        lda_result, coherence_lda, _, _ = model.lda_model(num_topics=int(num_topics),
                                                     chunksize=int(chunksize),
                                                     alpha=alpha,
                                                     eta=eta,
