@@ -127,11 +127,14 @@ body{
     margin-top: 80px;
     font-size: 10pt;
     float: left;
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(35, 35, 35);
     color: white;
     overflow-x: hidden;
     overflow-y: scroll;
 }
+
+.div-right-speech::-webkit-scrollbar { width: 0 !important }
+
 
 .div-right-speech H4{
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
@@ -401,6 +404,8 @@ body{
     resize: None;
     overflow-wrap: normal;
 }
+
+.lda-text-area::-webkit-scrollbar { width: 0 !important }
 
 .lda-accuracy{
     font-family:  "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
