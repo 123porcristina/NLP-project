@@ -12,6 +12,7 @@ from Code import PreprocessingSpeech as ps
 from Code import Model
 from pathlib import Path
 import pandas as pd
+import os
 
 ################################################################################
 ###
@@ -19,7 +20,7 @@ import pandas as pd
 ###
 ################################################################################
 dir_base = (str(Path(__file__).parents[1]) + '/Data')
-
+assets_dir = (str(Path(__file__).parents[1]) + '/App v2/assets')
 df_file = pd.read_pickle(dir_base + "/df_data.pickle")
 df_tokens = pd.read_pickle(dir_base + "/df_tokens.pickle")
 df_lda = pd.read_pickle(dir_base + "/df_lda.pickle")
@@ -312,7 +313,6 @@ app.layout = html.Div([
                                          children=[
                                              html.Button('Run LDA Model',
                                                          id='button-lda',
-                                                         n_clicks=0,
                                                          className='button-lda'),
                                          ])
                                  ]),
@@ -454,7 +454,12 @@ def display_content(selected_tab):
                State('text-field-eta', 'value'),
                State('text-field-passes', 'value')])
 def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
-    if n_clicks >= 1:
+    if os.path.exists(assets_dir + '/lda.html'):
+        os.remove(assets_dir + '/lda.html')
+    else:
+        print("[INFO] lda.html file does not exist")
+    print(n_clicks)
+    if n_clicks is not None and n_clicks > 0:
         model = Model.ModelTopic(doc=df_lda)
         bigram_speech, common_words = model.model_bigram()
         lda_result, coherence_lda, _, _ = model.lda_model(num_topics=int(num_topics),
@@ -469,42 +474,105 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
 
         lda_str = ''.join(list_lda)
 
+        df_year = model.model_year()
+        df_region = model.model_region()
+
+        df_year_new = df_year.drop(columns='combined')
+        df_region_new = df_region.drop(columns='combined')
+
+        data_year = list()
+        data_region = list()
+
+        for i, row in df_year_new.iterrows():
+            x_list = list()
+            y_list = list()
+
+            for lda_tuple in row['lda']:
+                x_list.append(lda_tuple[0])
+                y_list.append(lda_tuple[1])
+
+            rows_dict = {'name': row['year'], 'x': x_list, 'y': y_list, 'mode': "markers",
+                         'marker': {'size':  12}}
+            data_year.append(rows_dict)
+
+        for i, row in df_region_new.iterrows():
+            x_list = list()
+            y_list = list()
+
+            for lda_tuple in row['lda']:
+                x_list.append(lda_tuple[0])
+                y_list.append(lda_tuple[1])
+
+            rows_dict = {'name': row['Region'], 'x': x_list, 'y': y_list, 'mode': "markers",
+                         'marker': {'size':  12}}
+            data_region.append(rows_dict)
+
         return html.Div(id='content-lda',
                         className='div-lda',
                         children=[
-                        html.Div(id='lda-text-result', className='lda-text-result',
-                                 children=[
-                                     html.H4(id='lda-result-title',
-                                     className='lda-result-title',
-                                     children=['LIST OF TOPICS']),
+                                html.Div(id='lda-text-result', className='lda-text-result',
+                                         children=[
+                                             html.H4(id='lda-result-title',
+                                             className='lda-result-title',
+                                             children=['LIST OF TOPICS']),
 
-                                    html.Textarea(id='lda-text-area',
-                                                  className='lda-text-area',
-                                                  children=[lda_str]),
-                                    html.H3(id='lda-accuracy',
-                                            className='lda-accuracy',
-                                            children=['Accuracy: ', f'{coherence_lda*100:.2f}', '%'])]
-                                            ),
-
-                        html.Div(id='div-lda-graphs',
-                                 className='div-lda-graphs',
-                                 children=[
-                                     html.Iframe(
-                                         src=app.get_asset_url('lda.html'),
-                                         height="100%",
-                                         width='100%',
-                                         style={
-                                             'border-style': 'none',
-                                             'align': 'middle',
-                                             'margin': 'auto',
-                                             'background-color': 'darkgrey'
+                                            html.Textarea(id='lda-text-area',
+                                                          className='lda-text-area',
+                                                          children=[lda_str]),
+                                            html.H3(id='lda-accuracy',
+                                                    className='lda-accuracy',
+                                                    children=['Accuracy: ', f'{coherence_lda*100:.2f}', '%'])]
+                                    ),
+                                html.Div(id='div-lda-graphs',
+                                         className='div-lda-graphs',
+                                         children=[
+                                             html.Iframe(
+                                                 src=app.get_asset_url('lda.html'),
+                                                 height="100%",
+                                                 width='100%',
+                                                 style={
+                                                     'border-style': 'none',
+                                                     'align': 'middle',
+                                                     'margin': 'auto',
+                                                     'background-color': 'darkgrey'
+                                                 }
+                                             )
+                                            ],
+                                            style={
+                                                'max-width': '1250px',
+                                                'height': '860px'
+                                            }
+                                    ),
+                                dcc.Graph(
+                                     figure={
+                                         'data': data_year,
+                                         'layout': {
+                                             'title': 'Topic Distribution by Year',
+                                             'plot_bgcolor': 'darkgrey',
+                                             'paper_bgcolor': 'darkgrey',
+                                             'xaxis': {'title': 'Topic'},
+                                             'yaxis': {'title': 'Probability'}
                                          }
-                                     ),
-                                     "HelloWorld"
-                                    ],
+                                     },
+                                    className='div-lda-graphs',
                                     style={
-                                        'max-width': '1250px',
-                                        'height': '860px'
+                                        'max-width': '1250px'
+                                    }
+                                 ),
+                                dcc.Graph(
+                                    figure={
+                                        'data': data_region,
+                                        'layout': {
+                                            'title': 'Topic Distribution by Region',
+                                            'plot_bgcolor': 'darkgrey',
+                                            'paper_bgcolor': 'darkgrey',
+                                            'xaxis': {'title': 'Topic'},
+                                            'yaxis': {'title': 'Probability'}
+                                        }
+                                    },
+                                    className='div-lda-graphs',
+                                    style={
+                                        'max-width': '1250px'
                                     }
                                 )
                             ]
