@@ -48,67 +48,10 @@ def main():
     """Model over the whole data"""
     model = Model.ModelTopic(doc=df_tokens)
     model.model_bigram()
-    # lda_model, _, doc_term_matrix, texts = model.lda_model(num_topics=100, chunksize=100, alpha='auto', eta='auto', passes=200)
-    lda_model, _, doc_term_matrix, texts = model.lda_model(num_topics=2, chunksize=100, alpha='auto', eta='auto',
-                                                           passes=200)
+    lda_model, _, doc_term_matrix, texts = model.lda_model(num_topics=100, chunksize=100, alpha='auto', eta='auto', passes=200)
+    
     """Apply model per year"""
-    df_year = model.model_year()
-
-    df_year_new = df_year.drop(columns='combined')
-    print(df_year_new)
-
-    data = list()
-
-    for i, row in df_year_new.iterrows():
-        # rows_dict = dict()
-        x_list = list()
-        y_list = list()
-
-        for lda_tuple in row['lda']:
-            x_list.append(lda_tuple[0])
-            y_list.append(lda_tuple[1])
-
-        rows_dict = {'name': row['year'], 'x': x_list, 'y': y_list, 'type': "line"}
-
-        data.append(rows_dict)
-
-
-    print(data)
-
-    # data_dict = dict()
-    #
-    # for i, row in df_year_new.iterrows():
-    #     data_dict[row['year']] = row['lda']
-    #
-    # print(data_dict)
-    #
-    # data_dict_new = dict()
-    # for key, value in data_dict.items():
-    #     x_list = list()
-    #     y_list = list()
-    #     name = key
-    #     for val in value:
-    #         x, y = val
-    #         x_list.append(x)
-    #         y_list.append(y)
-    #     data_dict_new[name] = (x_list, y_list)
-    #
-    # for key, value in data_dict_new():
-    #     name = key
-    #     x_list, y_list = value
-    #     print(x_list)
-    #     print(y_list)
-    #     break
-
-    # print(df_year)
-
-    # year_list = list()
-
-    # for index, row in df_year.iterrows():
-    #     year_list.append(row['lda'])
-    #
-    # print(year_list)
-    # print(len(year_list))
+    model.model_year()
 
     """Apply model per region"""
     # model.model_region()

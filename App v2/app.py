@@ -470,9 +470,14 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
         lda_str = ''.join(list_lda)
 
         df_year = model.model_year()
-        df_year_new = df_year.drop(columns='combined')
+        df_region = model.model_region()
 
-        data = list()
+        df_year_new = df_year.drop(columns='combined')
+        df_region_new = df_region.drop(columns='combined')
+
+        data_year = list()
+        data_region =list()
+
         for i, row in df_year_new.iterrows():
             x_list = list()
             y_list = list()
@@ -481,8 +486,21 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                 x_list.append(lda_tuple[0])
                 y_list.append(lda_tuple[1])
 
-            rows_dict = {'name': row['year'], 'x': x_list, 'y': y_list, 'type': "marker"}
-            data.append(rows_dict)
+            rows_dict = {'name': row['year'], 'x': x_list, 'y': y_list, 'mode': "markers",
+                         'marker': {'size':  12}}
+            data_year.append(rows_dict)
+
+        for i, row in df_region_new.iterrows():
+            x_list = list()
+            y_list = list()
+
+            for lda_tuple in row['lda']:
+                x_list.append(lda_tuple[0])
+                y_list.append(lda_tuple[1])
+
+            rows_dict = {'name': row['Region'], 'x': x_list, 'y': y_list, 'mode': "markers",
+                         'marker': {'size':  12}}
+            data_region.append(rows_dict)
 
         return html.Div(id='content-lda',
                         className='div-lda',
@@ -522,18 +540,36 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                     ),
                                 dcc.Graph(
                                      figure={
-                                         'data': data,
+                                         'data': data_year,
                                          'layout': {
-                                             'title': 'Here is a graph',
+                                             'title': 'Topic Distribution by Year',
                                              'plot_bgcolor': 'darkgrey',
-                                             'paper_bgcolor': 'darkgrey'
+                                             'paper_bgcolor': 'darkgrey',
+                                             'xaxis':"Topic",
+                                             'yaxis':"Probability"
                                          }
                                      },
                                     className='div-lda-graphs',
                                     style={
                                         'max-width': '1250px'
                                     }
-                                 )
+                                 ),
+                                dcc.Graph(
+                                    figure={
+                                        'data': data_region,
+                                        'layout': {
+                                            'title': 'Topic Distribution by Region',
+                                            'plot_bgcolor': 'darkgrey',
+                                            'paper_bgcolor': 'darkgrey',
+                                            'xaxis':'Topic',
+                                            'yaxis':'Probability'
+                                        }
+                                    },
+                                    className='div-lda-graphs',
+                                    style={
+                                        'max-width': '1250px'
+                                    }
+                                )
                             ]
                         )
 
