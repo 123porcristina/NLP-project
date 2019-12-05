@@ -313,7 +313,6 @@ app.layout = html.Div([
                                          children=[
                                              html.Button('Run LDA Model',
                                                          id='button-lda',
-                                                         n_clicks=0,
                                                          className='button-lda'),
                                          ])
                                  ]),
@@ -459,7 +458,8 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
         os.remove(assets_dir + '/lda.html')
     else:
         print("[INFO] lda.html file does not exist")
-    if n_clicks >= 1:
+    print(n_clicks)
+    if n_clicks is not None and n_clicks > 0:
         model = Model.ModelTopic(doc=df_lda)
         bigram_speech, common_words = model.model_bigram()
         lda_result, coherence_lda, _, _ = model.lda_model(num_topics=int(num_topics),
