@@ -12,6 +12,7 @@ from Code import PreprocessingSpeech as ps
 from Code import Model
 from pathlib import Path
 import pandas as pd
+import os
 
 ################################################################################
 ###
@@ -19,7 +20,7 @@ import pandas as pd
 ###
 ################################################################################
 dir_base = (str(Path(__file__).parents[1]) + '/Data')
-
+assets_dir = (str(Path(__file__).parents[1]) + '/App v2/assets')
 df_file = pd.read_pickle(dir_base + "/df_data.pickle")
 df_tokens = pd.read_pickle(dir_base + "/df_tokens.pickle")
 df_lda = pd.read_pickle(dir_base + "/df_lda.pickle")
@@ -454,6 +455,10 @@ def display_content(selected_tab):
                State('text-field-eta', 'value'),
                State('text-field-passes', 'value')])
 def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
+    if os.path.exists(assets_dir + '/lda.html'):
+        os.remove(assets_dir + '/lda.html')
+    else:
+        print("[INFO] lda.html file does not exist")
     if n_clicks >= 1:
         model = Model.ModelTopic(doc=df_lda)
         bigram_speech, common_words = model.model_bigram()
@@ -476,7 +481,7 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
         df_region_new = df_region.drop(columns='combined')
 
         data_year = list()
-        data_region =list()
+        data_region = list()
 
         for i, row in df_year_new.iterrows():
             x_list = list()
@@ -545,8 +550,8 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                              'title': 'Topic Distribution by Year',
                                              'plot_bgcolor': 'darkgrey',
                                              'paper_bgcolor': 'darkgrey',
-                                             'xaxis':"Topic",
-                                             'yaxis':"Probability"
+                                             'xaxis': {'title': 'Topic'},
+                                             'yaxis': {'title': 'Probability'}
                                          }
                                      },
                                     className='div-lda-graphs',
@@ -561,8 +566,8 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                             'title': 'Topic Distribution by Region',
                                             'plot_bgcolor': 'darkgrey',
                                             'paper_bgcolor': 'darkgrey',
-                                            'xaxis':'Topic',
-                                            'yaxis':'Probability'
+                                            'xaxis': {'title': 'Topic'},
+                                            'yaxis': {'title': 'Probability'}
                                         }
                                     },
                                     className='div-lda-graphs',
