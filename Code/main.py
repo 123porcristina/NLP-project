@@ -57,7 +57,7 @@ def main():
     # _, sent_topics_df = model.format_topics_sentences(lda_model, doc_term_matrix, texts)
     # model.top_five(sent_topics_df=sent_topics_df)
 
-        
+
     """Get the differences"""
     # differences = speech.getDifferences(tokenWord_base, tokenWord_curr)
 
