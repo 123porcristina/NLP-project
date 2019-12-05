@@ -469,44 +469,71 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
 
         lda_str = ''.join(list_lda)
 
+        df_year = model.model_year()
+        df_year_new = df_year.drop(columns='combined')
+
+        data = list()
+        for i, row in df_year_new.iterrows():
+            x_list = list()
+            y_list = list()
+
+            for lda_tuple in row['lda']:
+                x_list.append(lda_tuple[0])
+                y_list.append(lda_tuple[1])
+
+            rows_dict = {'name': row['year'], 'x': x_list, 'y': y_list, 'type': "marker"}
+            data.append(rows_dict)
+
         return html.Div(id='content-lda',
                         className='div-lda',
                         children=[
-                        html.Div(id='lda-text-result', className='lda-text-result',
-                                 children=[
-                                     html.H4(id='lda-result-title',
-                                     className='lda-result-title',
-                                     children=['LIST OF TOPICS']),
+                                html.Div(id='lda-text-result', className='lda-text-result',
+                                         children=[
+                                             html.H4(id='lda-result-title',
+                                             className='lda-result-title',
+                                             children=['LIST OF TOPICS']),
 
-                                    html.Textarea(id='lda-text-area',
-                                                  className='lda-text-area',
-                                                  children=[lda_str]),
-                                    html.H3(id='lda-accuracy',
-                                            className='lda-accuracy',
-                                            children=['Accuracy: ', f'{coherence_lda*100:.2f}', '%'])]
-                                            ),
-
-                        html.Div(id='div-lda-graphs',
-                                 className='div-lda-graphs',
-                                 children=[
-                                     html.Iframe(
-                                         src=app.get_asset_url('lda.html'),
-                                         height="100%",
-                                         width='100%',
-                                         style={
-                                             'border-style': 'none',
-                                             'align': 'middle',
-                                             'margin': 'auto',
-                                             'background-color': 'darkgrey'
+                                            html.Textarea(id='lda-text-area',
+                                                          className='lda-text-area',
+                                                          children=[lda_str]),
+                                            html.H3(id='lda-accuracy',
+                                                    className='lda-accuracy',
+                                                    children=['Accuracy: ', f'{coherence_lda*100:.2f}', '%'])]
+                                    ),
+                                html.Div(id='div-lda-graphs',
+                                         className='div-lda-graphs',
+                                         children=[
+                                             html.Iframe(
+                                                 src=app.get_asset_url('lda.html'),
+                                                 height="100%",
+                                                 width='100%',
+                                                 style={
+                                                     'border-style': 'none',
+                                                     'align': 'middle',
+                                                     'margin': 'auto',
+                                                     'background-color': 'darkgrey'
+                                                 }
+                                             )
+                                            ],
+                                            style={
+                                                'max-width': '1250px',
+                                                'height': '860px'
+                                            }
+                                    ),
+                                dcc.Graph(
+                                     figure={
+                                         'data': data,
+                                         'layout': {
+                                             'title': 'Here is a graph',
+                                             'plot_bgcolor': 'darkgrey',
+                                             'paper_bgcolor': 'darkgrey'
                                          }
-                                     ),
-                                     "HelloWorld"
-                                    ],
+                                     },
+                                    className='div-lda-graphs',
                                     style={
-                                        'max-width': '1250px',
-                                        'height': '860px'
+                                        'max-width': '1250px'
                                     }
-                                )
+                                 )
                             ]
                         )
 
