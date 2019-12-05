@@ -534,7 +534,7 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                                      'border-style': 'none',
                                                      'align': 'middle',
                                                      'margin': 'auto',
-                                                     'background-color': 'darkgrey'
+                                                     'background-color': 'white'
                                                  }
                                              )
                                             ],
@@ -548,8 +548,8 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                          'data': data_year,
                                          'layout': {
                                              'title': 'Topic Distribution by Year',
-                                             'plot_bgcolor': 'darkgrey',
-                                             'paper_bgcolor': 'darkgrey',
+                                             # 'plot_bgcolor': '#383838',
+                                             # 'paper_bgcolor': '#383838',
                                              'xaxis': {'title': 'Topic'},
                                              'yaxis': {'title': 'Probability'}
                                          }
@@ -564,8 +564,8 @@ def output(n_clicks, num_topics, chunksize, alpha, eta, passes):
                                         'data': data_region,
                                         'layout': {
                                             'title': 'Topic Distribution by Region',
-                                            'plot_bgcolor': 'darkgrey',
-                                            'paper_bgcolor': 'darkgrey',
+                                            # 'plot_bgcolor': 'darkgrey',
+                                            # 'paper_bgcolor': 'darkgrey',
                                             'xaxis': {'title': 'Topic'},
                                             'yaxis': {'title': 'Probability'}
                                         }
